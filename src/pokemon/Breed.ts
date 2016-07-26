@@ -1,4 +1,5 @@
 import {Type} from './Type.ts';
+import {Evolution} from './Evolution.ts';
 
 /**
  * Description of a Breed
@@ -21,36 +22,27 @@ export class Breed {
     protected types:Type[];
 
     /**
-     * What pokemon does this evolve from
+     * Which pokemon does this evolve from
      */
-    protected evolvesFrom:Breed;
+    protected evolvesFrom:Evolution[];
 
     /**
-     * How many candies does it take to get to this pokemon
+     * Which pokemon does this evolve to
      */
-    protected candiesToEvolve:number;
-
-    /**
-     * The candy this breed is associated with
-     */
-    protected candy:Breed;
+    protected evolvesTo:Evolution[];
 
     /**
      * Create a breed of pokemon
      * @param {number} id
      * @param {string} name
      * @param {Type[]} types
-     * @param {Breed} evolvesFrom
-     * @param {number} candiesToEvolve
-     * @param {Breed} candy
      */
-    public constructor(id:number, name:string, types?:Type[], evolvesFrom?:Breed, candiesToEvolve?:number, candy?:Breed) {
+    public constructor(id:number, name:string, types?:Type[]) {
         this.id = id;
         this.name = name;
         this.types = types || [];
-        this.evolvesFrom = evolvesFrom || null;
-        this.candiesToEvolve = candiesToEvolve || null;
-        this.candy = candy || this;
+        this.evolvesFrom = [];
+        this.evolvesTo = [];
     }
 
     /**
@@ -71,9 +63,25 @@ export class Breed {
         if (this.types.length) {
             description += `\nType: ${this.describeTypes()}`;
         }
-        if (this.evolvesFrom && this.candiesToEvolve > 0) {
-            description += `\nEvolves from ${this.evolvesFrom.getName()}`;
-            description += ` with ${this.candiesToEvolve} ${this.candy.getName()} candies`;
+        if (this.evolvesFrom.length > 0) {
+            description += '\nEvolves from:';
+            for (let i = 0; i < this.evolvesFrom.length; i++) {
+                /** @type Evolution */
+                let evolution = this.evolvesFrom[i];
+                description += `\n${evolution.from.getName()} with ${evolution.numberOfCandies}`
+                             + ` ${evolution.candyType.getName()} candies`;
+
+            }
+        }
+        if (this.evolvesTo.length > 0) {
+            description += '\nEvolves in to:';
+            for (let i = 0; i < this.evolvesTo.length; i++) {
+                /** @type Evolution */
+                let evolution = this.evolvesTo[i];
+                description += `\n${evolution.from.getName()} with ${evolution.numberOfCandies}`
+                             + ` ${evolution.candyType.getName()} candies`;
+
+            }
         }
         return description;
     }
@@ -88,4 +96,13 @@ export class Breed {
             return String(type)
         }).join(', ');
     }
+
+    public setEvolvesFrom(evolvesFrom:Evolution[]) {
+        this.evolvesFrom = evolvesFrom;
+    }
+
+    public setEvolvesTo(evolvesTo:Evolution[]) {
+        this.evolvesTo = evolvesTo;
+    }
+
 }
