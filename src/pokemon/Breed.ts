@@ -1,9 +1,9 @@
 import {Type} from './Type.ts';
 
 /**
- * Description of a Pokemon
+ * Description of a Breed
  */
-export class Pokemon {
+export class Breed {
 
     /**
      * The id in the pokedex
@@ -16,14 +16,14 @@ export class Pokemon {
     protected name:string;
 
     /**
-     * What types the Pokemon has
+     * What types the Breed has
      */
     protected types:Type[];
 
     /**
      * What pokemon does this evolve from
      */
-    protected evolvesFrom:Pokemon;
+    protected evolvesFrom:Breed;
 
     /**
      * How many candies does it take to get to this pokemon
@@ -31,26 +31,26 @@ export class Pokemon {
     protected candiesToEvolve:number;
 
     /**
-     * The candy this pokemon uses
+     * The candy this breed is associated with
      */
-    protected candy:Pokemon;
+    protected candy:Breed;
 
     /**
-     * Create a pokemon
+     * Create a breed of pokemon
      * @param {number} id
      * @param {string} name
      * @param {Type[]} types
-     * @param {Pokemon} evolvesFrom
+     * @param {Breed} evolvesFrom
      * @param {number} candiesToEvolve
-     * @param {Pokemon} candy
+     * @param {Breed} candy
      */
-    public constructor(id:number, name:string, types:Type[], evolvesFrom:Pokemon, candiesToEvolve:number, candy:Pokemon) {
+    public constructor(id:number, name:string, types?:Type[], evolvesFrom?:Breed, candiesToEvolve?:number, candy?:Breed) {
         this.id = id;
         this.name = name;
         this.types = types || [];
-        this.evolvesFrom = evolvesFrom;
-        this.candiesToEvolve = candiesToEvolve || 0;
-        this.candy = candy;
+        this.evolvesFrom = evolvesFrom || null;
+        this.candiesToEvolve = candiesToEvolve || null;
+        this.candy = candy || this;
     }
 
     /**
@@ -88,5 +88,4 @@ export class Pokemon {
             return String(type)
         }).join(', ');
     }
-
 }
